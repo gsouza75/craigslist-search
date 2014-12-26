@@ -70,7 +70,7 @@ var proto = {
       query: { query: query }
     };
 
-    ['minAsk', 'maxAsk', 's', 'sort'].forEach(function (option) {
+    this.options.supportedQueryOptions.forEach(function (option) {
       /* jshint eqnull: true */
       var opt = this.options[option];
       if (opt != null) obj.query[option] = opt;
@@ -85,7 +85,8 @@ var proto = {
   },
 
   defaults: {
-    city: 'losangeles'
+    city: 'losangeles',
+    supportedQueryOptions: ['minAsk', 'maxAsk', 's', 'sort']
   }
 };
 
