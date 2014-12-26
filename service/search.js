@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 var cheerio = require('cheerio');
+var debug = require('debug')('craigslist-search');
 var q = require('q');
 var request = q.nbind(require('request'));
 var url = require('url');
@@ -49,6 +50,8 @@ var proto = {
     var url = this.getUrl(query);
     var deferred = q.defer();
 
+    debug('Searching url %s', url);
+
     request(url)
     .then(handleResponse)
     .catch(handleError)
@@ -68,7 +71,7 @@ var proto = {
     };
 
     ['minAsk', 'maxAsk', 's', 'sort'].forEach(function (option) {
-      /* jshint eqnull: true, validthis: true */
+      /* jshint eqnull: true */
       var opt = this.options[option];
       if (opt != null) obj.query[option] = opt;
     }, this);
