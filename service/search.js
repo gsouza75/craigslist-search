@@ -8,6 +8,11 @@ var request = q.nbind(require('request'));
 var url = require('url');
 
 module.exports = Object.create({
+  
+  defaults: {
+    city: 'losangeles',
+    supportedQueryOptions: ['minAsk', 'maxAsk', 's', 'sort']
+  },
 
   query: function (query, options) {
     function handleSuccess(res) {
@@ -25,7 +30,7 @@ module.exports = Object.create({
 
       var $ = cheerio.load(body);
       var result = $('.content .row').map(function () {
-        return getRowData($(this));
+        return getPostData($(this));
       });
 
       deferred.resolve(result.get());
@@ -36,7 +41,7 @@ module.exports = Object.create({
       deferred.reject(err);
     }
 
-    function getRowData($row) {
+    function getPostData($row) {
       var baesUrl = 'http://' + host;
       var $anchor = $row.find('a.i');
       var $pl = $row.find('.txt .pl');
@@ -97,10 +102,5 @@ module.exports = Object.create({
   setOptions: function (options) {
     this.options = options || {};
     _.defaults(this.options, this.defaults);
-  },
-
-  defaults: {
-    city: 'losangeles',
-    supportedQueryOptions: ['minAsk', 'maxAsk', 's', 'sort']
   }
 });
