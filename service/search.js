@@ -10,7 +10,7 @@ var url = require('url');
 module.exports = Object.create({
 
   query: function (query, options) {
-    function handleResponse(res) {
+    function handleSuccess(res) {
       var status = res[0].statusCode;
 
       if (status >= 400) {
@@ -29,6 +29,11 @@ module.exports = Object.create({
       });
 
       deferred.resolve(result.get());
+    }
+
+    function handleError(err) {
+      debug('Search query failed: %s', err);
+      deferred.reject(err);
     }
 
     function getRowData($row) {
@@ -58,8 +63,8 @@ module.exports = Object.create({
     debug('Search query url: %s', searchQryUrl);
 
     request(searchQryUrl)
-    .then(handleResponse)
-    .catch(deferred.reject)
+    .then(handleSuccess)
+    .catch(handleError)
     .done();
 
     return deferred.promise;
@@ -83,7 +88,7 @@ module.exports = Object.create({
       var opt = this.options[option];
 
       /* jshint eqnull: true */
-      if (opt != null) obj.query[option] = opt;
+      if (opt != null) { obj.query[option] = opt; }
     }, this);
 
     return url.format(obj);
