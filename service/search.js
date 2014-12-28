@@ -7,8 +7,8 @@ var q = require('q');
 var request = q.nbind(require('request'));
 var url = require('url');
 
+module.exports = Object.create({
 
-var proto = {
   query: function (query, options) {
     function handleResponse(res) {
       var status = res[0].statusCode;
@@ -102,6 +102,4 @@ var proto = {
     city: 'losangeles',
     supportedQueryOptions: ['minAsk', 'maxAsk', 's', 'sort']
   }
-};
-
-module.exports = Object.create(proto);
+});
