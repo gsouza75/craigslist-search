@@ -15,7 +15,7 @@ module.exports = Object.create({
   },
 
   query: function (query, options) {
-    function handleSuccess(res) {
+    function success(res) {
       var status = res[0].statusCode;
 
       if (status >= 400) {
@@ -36,7 +36,7 @@ module.exports = Object.create({
       deferred.resolve(result.get());
     }
 
-    function handleError(err) {
+    function error(err) {
       debug('Search query failed: %s', err);
       deferred.reject(err);
     }
@@ -70,8 +70,8 @@ module.exports = Object.create({
     debug('Search query url: %s', searchQryUrl);
 
     request(searchQryUrl)
-    .then(handleSuccess)
-    .catch(handleError)
+    .then(success)
+    .catch(error)
     .done();
 
     return deferred.promise;
