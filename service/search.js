@@ -41,14 +41,14 @@ module.exports = Object.create({
       deferred.reject(err);
     }
 
-    function getPostData($row) {
+    function getPostData($post) {
       var baesUrl = 'http://' + host;
-      var $anchor = $row.find('a.i');
-      var $pl = $row.find('.txt .pl');
-      var $cat = $row.find('.l2 .gc');
+      var $anchor = $post.find('a.i');
+      var $pl = $post.find('.txt .pl');
+      var $cat = $post.find('.l2 .gc');
 
       return {
-        pid: $row.attr('data-pid'),
+        pid: $post.attr('data-pid'),
         href: baesUrl + $anchor.attr('href'),
         price: $anchor.find('.price').text(),
         text: $pl.find('.hdrlnk').text(),
