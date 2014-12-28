@@ -29,8 +29,12 @@ module.exports = Object.create({
       debug('Got %d response:\n%s', status, body);
 
       var $ = cheerio.load(body);
+
+      var fn = typeof self.options.getPostData === 'function' ?
+        self.options.getPostData : getPostData;
+
       var result = $('.content .row').map(function () {
-        return getPostData($(this));
+        return fn($(this));
       });
 
       deferred.resolve(result.get());
@@ -63,6 +67,7 @@ module.exports = Object.create({
 
     this.setOptions(options);
 
+    var self = this;
     var host = this.getHost();
     var searchQryUrl = this.getSearchQueryUrl(host, query);
     var deferred = q.defer();
