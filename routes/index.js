@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var search = require('../service/search');
+var search = require('craigslist-json-search');
 
 var router = express.Router();
 
