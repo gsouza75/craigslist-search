@@ -31,10 +31,6 @@ module.exports = Object.create({
       deferred.resolve(result.get());
     }
 
-    function handleError(err) {
-      deferred.reject(err);
-    }
-
     function getRowData($row) {
       var baesUrl = 'http://' + host;
       var $anchor = $row.find('a.i');
@@ -63,7 +59,7 @@ module.exports = Object.create({
 
     request(searchQryUrl)
     .then(handleResponse)
-    .catch(handleError)
+    .catch(deferred.reject)
     .done();
 
     return deferred.promise;
