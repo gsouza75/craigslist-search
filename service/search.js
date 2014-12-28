@@ -15,8 +15,12 @@ module.exports = Object.create({
   },
 
   query: function (query, options) {
+    var self, host, searchQryUrl, deferred;
+
     function success(res) {
-      var status = res[0].statusCode;
+      var status, body, $, fn, result;
+
+      status = res[0].statusCode;
 
       if (status >= 400) {
         var err = new Error('Search query error: ' + status);
@@ -24,15 +28,15 @@ module.exports = Object.create({
         return deferred.reject(err);
       }
 
-      var body = res[1];
+      body = res[1];
 
       debug('Got %d response:\n%s', status, body);
 
-      var $ = cheerio.load(body);
-      var fn = typeof self.options.parse === 'function' ?
+      $ = cheerio.load(body);
+      fn = typeof self.options.parse === 'function' ?
         self.options.parse : parse;
 
-      var result = $('.content .row').map(function () {
+      result = $('.content .row').map(function () {
         return fn($(this));
       });
 
@@ -45,10 +49,12 @@ module.exports = Object.create({
     }
 
     function parse($post) {
-      var baesUrl = 'http://' + host;
-      var $anchor = $post.find('a.i');
-      var $pl = $post.find('.txt .pl');
-      var $cat = $post.find('.l2 .gc');
+      var baesUrl, $anchor, $pl, $cat;
+
+      baesUrl = 'http://' + host;
+      $anchor = $post.find('a.i');
+      $pl = $post.find('.txt .pl');
+      $cat = $post.find('.l2 .gc');
 
       return {
         pid: $post.attr('data-pid'),
@@ -66,10 +72,10 @@ module.exports = Object.create({
 
     this.setOptions(options);
 
-    var self = this;
-    var host = this.getHost();
-    var searchQryUrl = this.getSearchQueryUrl(host, query);
-    var deferred = q.defer();
+    self = this;
+    host = this.getHost();
+    searchQryUrl = this.getSearchQueryUrl(host, query);
+    deferred = q.defer();
 
     debug('Search query url: %s', searchQryUrl);
 
@@ -86,9 +92,11 @@ module.exports = Object.create({
   },
 
   getSearchQueryUrl: function (host, query) {
+    var obj;
+
     query = query || '';
     
-    var obj = {
+    obj = {
       protocol: 'http',
       host: host,
       pathname: 'search/sss',
