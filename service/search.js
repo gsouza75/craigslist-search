@@ -53,9 +53,11 @@ module.exports = Object.create({
         price: $anchor.find('.price').text(),
         text: $pl.find('.hdrlnk').text(),
         time: Date.parse($pl.find('time').attr('datetime')),
-        categoryLink: baesUrl + $cat.attr('href'),
-        categoryId: $cat.attr('data-cat'),
-        category: $cat.text()
+        category: {
+          href: baesUrl + $cat.attr('href'),
+          id: $cat.attr('data-cat'),
+          text: $cat.text()
+        }
       };
     }
 
