@@ -29,9 +29,8 @@ module.exports = Object.create({
       debug('Got %d response:\n%s', status, body);
 
       var $ = cheerio.load(body);
-
-      var fn = typeof self.options.getPostData === 'function' ?
-        self.options.getPostData : getPostData;
+      var fn = typeof self.options.parse === 'function' ?
+        self.options.parse : parse;
 
       var result = $('.content .row').map(function () {
         return fn($(this));
@@ -45,7 +44,7 @@ module.exports = Object.create({
       deferred.reject(err);
     }
 
-    function getPostData($post) {
+    function parse($post) {
       var baesUrl = 'http://' + host;
       var $anchor = $post.find('a.i');
       var $pl = $post.find('.txt .pl');
